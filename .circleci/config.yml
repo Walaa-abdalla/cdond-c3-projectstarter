@@ -300,16 +300,22 @@ jobs:
       - attach_workspace:
           at: ./
       - install-dependencies
+      # Restore from cache
+      - restore_cache:
+          keys:
+            - backend-build
       - run:
           name: Deploy backend
           command: |
             # your code here
             cd backend
-            npm i
-            npm run build
-            cd ..
+            # npm i
+            # npm run build
+            tar -czvf artifact-backend.tar.gz dist
+            # tar -czvf artifact-backend-modules.tar.gz node_modules
+            # cd ..
             # Zip the directory
-            tar -C backend -czvf artifact.tar.gz .
+            # tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
