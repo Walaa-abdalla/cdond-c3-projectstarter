@@ -184,7 +184,6 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      # - image: python:3.7-alpine3.11
       - image: cimg/base:stable
     steps:
       # Checkout code from git
@@ -206,20 +205,11 @@ jobs:
             sudo apt-get install ansible -y
             sudo apt install awscli
             aws --version
-          # command: |
-          #   apk add --update ansible 
-          #   apk add --no-cache tar
-          #   pip3 install --upgrade pip \
-          #   && pip3 install \
-          #       awscli \
-          #   && rm -rf /var/cache/apk/*
-          #   aws --version 
-      # - aws-cli/install
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
-            # ansible-inventory -i inventory.txt --list
+            ansible-inventory -i inventory.txt --list
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
@@ -290,7 +280,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.11
+      - image: cimg/base:stable
     steps:
       # Checkout code from git
       - checkout
@@ -305,11 +295,12 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --no-cache ansible tar
-            pip3 install --upgrade pip \
-            && pip3 install \
-                awscli \
-            && rm -rf /var/cache/apk/*
+            sudo apt-get update
+            sudo apt-get install software-properties-common
+            sudo apt-add-repository ppa:ansible/ansible
+            sudo apt-get update
+            sudo apt-get install ansible -y
+            sudo apt install awscli
             aws --version
       - run:
           name: Deploy backend
@@ -324,7 +315,7 @@ jobs:
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
-            ansible-playbook -i inventory.txt --private-key udacity.pem deploy-backend.yml
+            ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -438,26 +429,25 @@ cleanup:
 workflows:
   default:
     jobs:
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - deploy-infrastructure:
-          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          # filters:
-            # branches:
-            #   only: [circleci-project-setup]
-      - configure-infrastructure
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [circleci-project-setup]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
       # - deploy-backend:
