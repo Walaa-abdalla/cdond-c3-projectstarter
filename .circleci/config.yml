@@ -296,14 +296,14 @@ jobs:
           # You can get this ID in the section where you registered the SSH Key
           fingerprints:
             - "19:12:f3:0b:3c:da:f5:fc:0f:0f:57:26:7c:52:6d:0b"
-      # attach workspace
-      - attach_workspace:
-          at: ./
       - install-dependencies
       # Restore from cache
       - restore_cache:
           keys:
             - backend-build
+      # attach workspace
+      - attach_workspace:
+          at: ./
       - run:
           name: Deploy backend
           command: |
