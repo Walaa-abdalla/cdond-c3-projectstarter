@@ -199,19 +199,19 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible 
-            apk add --no-cache tar
-            pip3 install --upgrade pip \
-            && pip3 install \
-                awscli \
-            && rm -rf /var/cache/apk/*
-            aws --version 
+            # apk add --no-cache tar
+            # pip3 install --upgrade pip \
+            # && pip3 install \
+            #     awscli \
+            # && rm -rf /var/cache/apk/*
+            # aws --version 
+      - aws-cli/install
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
             ansible-inventory -i inventory.txt --list
-            chmod 400 udacity.pem
-            ansible-playbook -i inventory.txt --private-key udacity.pem configure-server.yml
+            ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
