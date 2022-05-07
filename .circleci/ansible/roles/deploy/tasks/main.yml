@@ -3,22 +3,22 @@
     file:
       path: ~/web
       state: directory
-  - name: "Copy web backend artifact"
-    template:
-      src: "~/project/backend/artifact-backend.tar.gz"
-      dest: "~/web/artifact.tar.gz"
+  # - name: "Copy web backend artifact"
+  #   template:
+  #     src: "~/project/backend/artifact-backend.tar.gz"
+  #     dest: "~/web/artifact.tar.gz"
   # - name: "Copy web backend node modules artifact"
   #   template:
   #     src: "~/project/backend/artifact-backend-modules.tar.gz"
   #     dest: "~/web/artifact-backend-modules.tar.gz"
   - name: "unzip artifact"
     unarchive:
-      src: ~/web/artifact-backend.tar.gz
+      src: "~/project/artifact.tar.gz"
       dest: ~/web/    
-  - name: "install node_modules"
-    become: true
-    npm:
-      name: i  
+  # - name: "install node_modules"
+  #   become: true
+  #   npm:
+  #     name: i  
   # - name: "unzip artifact"
   #   unarchive:
   #     src: ~/web/artifact-backend-modules.tar.gz
@@ -27,4 +27,4 @@
     shell: |
       cd ~/web
       pm2 stop default
-      pm2 start npm -- start:prod
+      pm2 start npm -- start
