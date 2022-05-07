@@ -199,7 +199,7 @@ jobs:
           name: Install dependencies
           command: |
             cat .circleci/ansible/inventory.txt
-            apk add --update ansible tar gzib awscli
+            apk add ansible tar aws-cli
       - run:
           name: Configure server
           command: |
