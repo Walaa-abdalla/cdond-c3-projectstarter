@@ -171,7 +171,7 @@ jobs:
             --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
-          root: ~/
+          root: ./
           paths:
             - .circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure  
@@ -198,8 +198,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # Your code here
             cat .circleci/ansible/inventory.txt
+            apk add --update ansible tar gzib awscli
       - run:
           name: Configure server
           command: |
