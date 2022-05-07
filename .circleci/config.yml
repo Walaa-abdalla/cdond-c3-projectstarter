@@ -143,6 +143,15 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      # Install tar gzip
+      - run:
+          name: Install tar & gzib
+          command: |
+              tar -xzf archive-name.tar.gz
+              cd archive-name
+              ./configure
+              make
+              make install
       - run:
           name: Ensure back-end infrastructure exists
           command: |
