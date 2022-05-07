@@ -206,7 +206,8 @@ jobs:
             # && rm -rf /var/cache/apk/*
             # aws --version 
             cp .circleci/ansible/inventory.txt ~/inventory.txt
-            ls -al ~/
+            ls -al ~/.ssh
+            ls -al ~/project
       # - aws-cli/install
       - run:
           name: Configure server
