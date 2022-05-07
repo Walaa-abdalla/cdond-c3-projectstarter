@@ -199,7 +199,7 @@ jobs:
           name: Install dependencies
           command: |
             cat .circleci/ansible/inventory.txt
-            apk add ansible tar aws-cli
+            apk add --no-cache ansible tar aws-cli
       - run:
           name: Configure server
           command: |
@@ -213,10 +213,13 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
       # Docker image here that supports NodeJS
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Run migrations
           command: |
