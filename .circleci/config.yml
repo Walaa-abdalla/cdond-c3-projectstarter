@@ -184,7 +184,7 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.11
+      - image: python:3.8-alpine3.11
     steps:
       # Checkout code from git
       - checkout
@@ -207,6 +207,7 @@ jobs:
             # aws --version 
             cp .circleci/ansible/inventory.txt ~/inventory.txt
             ls -al ~/.ssh
+            cat ~/.ssh/known_hosts
             ls -al ~/project
       # - aws-cli/install
       - run:
@@ -216,7 +217,7 @@ jobs:
             # ansible-inventory -i inventory.txt --list
             cat inventory.txt
             chmod 400 udacity.pem
-            ansible-playbook -i ~/inventory.txt -u ubuntu configure-server.yml
+            ansible-playbook -i inventory.txt -u ubuntu configure-server.yml
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
