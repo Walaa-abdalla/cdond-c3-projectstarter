@@ -256,9 +256,9 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            yum install python37
-            yum install Ansible
-            yum install nodejs14
+            yum -y install python37
+            yum -y install Ansible
+            yum -y install nodejs14
       - run:
           name: Get backend url
           command: |
@@ -306,6 +306,9 @@ jobs:
             sudo apt-get update
             sudo apt-get install ansible -y
             sudo apt install awscli
+            sudo apt install nodejs
+            sudo apt install npm
+            node -v
             aws --version
       - run:
           name: Deploy backend
@@ -456,8 +459,8 @@ workflows:
       - deploy-frontend:
           requires: [deploy-infrastructure]
           # requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
