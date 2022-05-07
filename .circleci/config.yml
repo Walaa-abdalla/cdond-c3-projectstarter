@@ -205,7 +205,7 @@ jobs:
             #     awscli \
             # && rm -rf /var/cache/apk/*
             # aws --version 
-      - aws-cli/install
+      # - aws-cli/install
       - run:
           name: Configure server
           command: |
