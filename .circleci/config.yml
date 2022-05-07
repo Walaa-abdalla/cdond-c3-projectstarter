@@ -215,6 +215,7 @@ jobs:
             cd .circleci/ansible
             # ansible-inventory -i inventory.txt --list
             cat inventory.txt
+            chmod 400 udacity.pem
             ansible-playbook -i ~/inventory.txt -u ubuntu configure-server.yml
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
