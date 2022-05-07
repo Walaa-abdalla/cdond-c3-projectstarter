@@ -205,6 +205,8 @@ jobs:
             #     awscli \
             # && rm -rf /var/cache/apk/*
             # aws --version 
+            cp inventory.txt ~/inventory.txt
+            ls -al ~/
       # - aws-cli/install
       - run:
           name: Configure server
@@ -212,7 +214,7 @@ jobs:
             cd .circleci/ansible
             # ansible-inventory -i inventory.txt --list
             cat inventory.txt
-            ansible-playbook -i inventory.txt -u ubuntu configure-server.yml
+            ansible-playbook -i ~/inventory.txt -u ubuntu configure-server.yml
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
