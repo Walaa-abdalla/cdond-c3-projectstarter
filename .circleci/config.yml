@@ -205,7 +205,7 @@ jobs:
             #     awscli \
             # && rm -rf /var/cache/apk/*
             # aws --version 
-            cp inventory.txt ~/inventory.txt
+            cp .circleci/ansible/inventory.txt ~/inventory.txt
             ls -al ~/
       # - aws-cli/install
       - run:
