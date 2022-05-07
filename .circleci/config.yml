@@ -191,15 +191,15 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           # You can get this ID in the section where you registered the SSH Key
-          fingerprints:
-            - "19:12:f3:0b:3c:da:f5:fc:0f:0f:57:26:7c:52:6d:0b" 
+          fingerprints: ["19:12:f3:0b:3c:da:f5:fc:0f:0f:57:26:7c:52:6d:0b"]
       # attach workspace
       - attach_workspace:
           at: ./
       - run:
           name: Install dependencies
           command: |
-            apk add --no-cache ansible tar
+            apk add --update ansible 
+            apk add --no-cache tar
             pip3 install --upgrade pip \
             && pip3 install \
                 awscli \
@@ -210,6 +210,7 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-inventory -i inventory.txt --list
+            chmod 400 udacity.pem
             ansible-playbook -i inventory.txt --private-key udacity.pem configure-server.yml
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
