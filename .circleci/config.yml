@@ -204,7 +204,6 @@ jobs:
             sudo apt-add-repository ppa:ansible/ansible
             sudo apt-get update
             sudo apt-get install ansible -y
-            ansible -v
             sudo apt install awscli
             aws --version
           # command: |
