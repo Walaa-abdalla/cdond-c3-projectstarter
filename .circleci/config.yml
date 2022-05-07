@@ -199,13 +199,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt-get update
-            apt-get install software-properties-common
-            apt-add-repository ppa:ansible/ansible
-            apt-get update
-            apt-get install ansible -y
+            sudo apt-get update
+            sudo apt-get install software-properties-common
+            sudo apt-add-repository ppa:ansible/ansible
+            sudo apt-get update
+            sudo apt-get install ansible -y
             ansible -v
-            apt install awscli
+            sudo apt install awscli
             aws --version
           # command: |
           #   apk add --update ansible 
