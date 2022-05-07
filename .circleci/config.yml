@@ -147,8 +147,10 @@ jobs:
       - run:
           name: Install tar & gzib
           command: |
-              tar -xzf archive-name.tar.gz
-              cd archive-name
+              apt-get update
+              wget https://dl.winehq.org/wine/source/1.9/wine-1.9.19.tar.bz2
+              tar xzvf wine-1.9.19.tar.bz2
+              cd wine-1.9.19
               ./configure
               make
               make install
