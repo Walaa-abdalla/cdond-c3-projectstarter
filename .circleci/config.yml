@@ -13,6 +13,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
+            aws s3 rm "s3://udapeople-<<parameters.workflow_id>>" --recursive
             aws cloudformation delete-stack --stack-name udapeople-backend-<<parameters.workflow_id>>
             aws cloudformation delete-stack --stack-name udapeople-frontend-<<parameters.workflow_id>>
   revert-migrations:
@@ -381,10 +382,6 @@ jobs:
       # Checkout code from git
       - checkout
       - install-dependencies
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       yum install nodejs14
       - run:
           name: Update cloudfront distribution
           command: |
@@ -408,10 +405,6 @@ jobs:
         - run:
             name: Get old stack workflow id
             command: |
-              # your code here
-              export OldWorkflowID="the id here"
-              export STACKS=[] #put the list of stacks here
-              Fetch the Old workflow ID
               export OldWorkflowID=$(aws cloudformation \
                       list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                       --no-paginate --output text)
