@@ -236,6 +236,11 @@ jobs:
               if grep -q "has been executed successfully." ./backend/migrations_dump.txt
               then
                 curl --insecure https://kvdb.io/PgpkXqrdgxH8zqqcpTDYMD/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              else
+                sudo apt-get update
+                sudo apt-get install software-properties-common
+                sudo apt install awscli
+                aws --version
               fi
      # Here's where you will add some code to rollback on failure      
       - destroy-environment:
@@ -448,8 +453,9 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [deploy-infrastructure]
+          # requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
       # - smoke-test:
