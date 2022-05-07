@@ -198,8 +198,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # apk add --update ansible 
-            pip install --user ansible
+            apk add --update ansible 
             apk add --no-cache tar
             pip3 install --upgrade pip \
             && pip3 install \
