@@ -145,14 +145,9 @@ jobs:
       - checkout
       # Install tar gzip
       - run:
-          name: Install tar & gzib
+          name: Install tar utility
           command: |
-              wget https://dl.winehq.org/wine/source/1.9/wine-1.9.19.tar.bz2
-              tar xzvf wine-1.9.19.tar.bz2
-              cd wine-1.9.19
-              ./configure
-              make
-              make install
+            yum install -y tar gzip
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -198,11 +193,13 @@ jobs:
           fingerprints:
             - "19:12:f3:0b:3c:da:f5:fc:0f:0f:57:26:7c:52:6d:0b" 
       # attach workspace
+      - attach_workspace:
+          at: ./
       - run:
           name: Install dependencies
           command: |
             # Your code here
-            exit 1
+            cat .circleci/ansible/inventory.txt
       - run:
           name: Configure server
           command: |
