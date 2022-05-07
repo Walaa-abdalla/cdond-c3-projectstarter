@@ -36,6 +36,21 @@ commands:
               #  Add revert code here. You can find this in the Getting Started section.
               npm run migrations:revert
             fi  
+  install-dependencies:
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install software-properties-common
+            sudo apt-add-repository ppa:ansible/ansible
+            sudo apt-get update
+            sudo apt-get install ansible -y
+            sudo apt install awscli
+            sudo apt install nodejs
+            sudo apt install npm
+            node -v
+            aws --version
 jobs:
   build-frontend:
     docker:
@@ -195,16 +210,7 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ./
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install software-properties-common
-            sudo apt-add-repository ppa:ansible/ansible
-            sudo apt-get update
-            sudo apt-get install ansible -y
-            sudo apt install awscli
-            aws --version
+      - install-dependencies
       - run:
           name: Configure server
           command: |
@@ -248,17 +254,11 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: amazon/aws-cli
+      - image: cimg/base:stable
     steps:
       # Checkout code from git
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
-            yum -y install python37
-            yum -y install Ansible
-            yum -y install nodejs14
+      - install-dependencies
       - run:
           name: Get backend url
           command: |
@@ -297,19 +297,7 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ./
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install software-properties-common
-            sudo apt-add-repository ppa:ansible/ansible
-            sudo apt-get update
-            sudo apt-get install ansible -y
-            sudo apt install awscli
-            sudo apt install nodejs
-            sudo apt install npm
-            node -v
-            aws --version
+      - install-dependencies
       - run:
           name: Deploy backend
           command: |
@@ -332,18 +320,20 @@ jobs:
   smoke-test:
     docker:
       # Lightweight Docker image 
-      - image: python:3.7-alpine3.11
+      - image: cimg/base:stable
     steps:
       # Checkout code from git
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --no-cache nodejs curl
-            pip3 install --upgrade pip \
-            && pip3 install \
-                awscli \
-            && rm -rf /var/cache/apk/*
-            aws --version
+      - checkout
+      - install-dependencies
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apk add --no-cache nodejs curl
+      #       pip3 install --upgrade pip \
+      #       && pip3 install \
+      #           awscli \
+      #       && rm -rf /var/cache/apk/*
+      #       aws --version
       - run:
           name: Get backend url
           command: |
@@ -379,13 +369,15 @@ jobs:
   cloudfront-update:
     docker:
       # Docker image here that supports AWS CLI
-      - image: amazon/aws-cli
+      - image: cimg/base:stable
     steps:
       # Checkout code from git
-      - run:
-          name: Install dependencies
-          command: |
-            yum install nodejs14
+      - checkout
+      - install-dependencies
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       yum install nodejs14
       - run:
           name: Update cloudfront distribution
           command: |
