@@ -210,8 +210,9 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-inventory -i inventory.txt --list
-            ansible-playbook -i inventory.txt configure-server.yml
+            # ansible-inventory -i inventory.txt --list
+            cat inventory.txt
+            ansible-playbook -i inventory.txt -U ubuntu configure-server.yml
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
