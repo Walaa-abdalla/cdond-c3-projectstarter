@@ -1,0 +1,14 @@
+[URL01]
+https://github.com/Walaa-abdalla/cdond-c3-projectstarter
+
+[URL02]
+http://udapeople-5ab36e9.s3-website-us-east-1.amazonaws.com
+
+[URL03]
+http://d1i54ekwxzmacd.cloudfront.net
+
+[URL04]
+http://ec2-52-201-238-222.compute-1.amazonaws.com
+
+[URL05]
+http://ec2-3-90-229-30.compute-1.amazonaws.com:9090/
